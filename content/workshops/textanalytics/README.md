@@ -1,4 +1,4 @@
-![perficient-logo](images/picture1.jpg)
+![perficient-logo](images/logo.jpg)
 
 # **T**witter Sentiment Analysis Workshop
 

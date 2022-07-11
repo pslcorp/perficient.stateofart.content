@@ -1,4 +1,4 @@
-# Introdiction
+# Introduction
 
 This repo contains public resources of the Perficient .NET State of Art team, such as documents and code from workshops, .NET 20 minutes, Chill and Learn, and other spaces.
 
