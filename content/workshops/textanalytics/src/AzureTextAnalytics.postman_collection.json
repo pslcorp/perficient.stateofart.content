@@ -1,0 +1,289 @@
+{
+    "info": {
+        "_postman_id": "1ba45bd1-db06-4374-90b4-ac2bf11cad66",
+        "name": "AzureTextAnalytics",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [{
+            "name": "GetEntitiesRecognition",
+            "request": {
+                "method": "POST",
+                "header": [{
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                }],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\r\n    \"documents\": [\r\n        {\r\n            \"id\": \"1\",\r\n            \"text\": \"{{text_demo1}}\"\r\n        }\r\n    ]\r\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "{{url-demo}}/text/analytics/v3.2-preview.1/entities/recognition/general",
+                    "host": [
+                        "{{url-demo}}"
+                    ],
+                    "path": [
+                        "text",
+                        "analytics",
+                        "v3.2-preview.1",
+                        "entities",
+                        "recognition",
+                        "general"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "GetkeyPhrases",
+            "request": {
+                "method": "POST",
+                "header": [{
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                }],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\r\n    \"documents\": [\r\n        {\r\n            \"id\": \"1\",\r\n            \"text\": \"{{text_demo1}}\"\r\n        }\r\n    ]\r\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "{{url-demo}}/text/analytics/v3.1/keyPhrases",
+                    "host": [
+                        "{{url-demo}}"
+                    ],
+                    "path": [
+                        "text",
+                        "analytics",
+                        "v3.1",
+                        "keyPhrases"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "GetSentimentAndOpinion",
+            "request": {
+                "method": "POST",
+                "header": [{
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                }],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\r\n    \"documents\": [\r\n        {\r\n            \"id\": \"1\",\r\n            \"text\": \"{{text_demo1}}\"\r\n        }\r\n    ]\r\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "{{url-demo}}/text/analytics/v3.2-preview.1/sentiment?opinionMining=true",
+                    "host": [
+                        "{{url-demo}}"
+                    ],
+                    "path": [
+                        "text",
+                        "analytics",
+                        "v3.2-preview.1",
+                        "sentiment"
+                    ],
+                    "query": [{
+                        "key": "opinionMining",
+                        "value": "true"
+                    }]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "GetLanguage",
+            "request": {
+                "method": "POST",
+                "header": [{
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                }],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\r\n    \"documents\": [\r\n        {\r\n            \"id\": \"1\",\r\n            \"text\": \"{{text_demo1}}\"\r\n        }\r\n    ]\r\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "{{url-demo}}/text/analytics/v3.1/languages",
+                    "host": [
+                        "{{url-demo}}"
+                    ],
+                    "path": [
+                        "text",
+                        "analytics",
+                        "v3.1",
+                        "languages"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "GetSummarization",
+            "request": {
+                "method": "POST",
+                "header": [{
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                }],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\r\n  \"analysisInput\": {\r\n    \"documents\": [\r\n      {\r\n        \"language\": \"en\",\r\n        \"id\": \"1\",\r\n        \"text\": \"At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic, human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI Cognitive Services, I have been working with a team of amazing scientists and engineers to turn this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship among three attributes of human cognition: monolingual text (X), audio or visual sensory signals, (Y) and multilingual (Z). At the intersection of all three, there’s magic—what we call XYZ-code as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear, see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have pretrained models that can jointly learn representations to support a broad range of downstream AI tasks, much in the way humans do today. Over the past five years, we have achieved human performance on benchmarks in conversational speech recognition, machine translation, conversational question answering, machine reading comprehension, and image captioning. These five breakthroughs provided us with strong signals toward our more ambitious aspiration to produce a leap in AI capabilities, achieving multisensory and multilingual learning that is closer in line with how humans learn and understand. I believe the joint XYZ-code is a foundational component of this aspiration, if grounded with external knowledge sources in the downstream AI tasks.\"\r\n      }\r\n    ]\r\n  },\r\n  \"tasks\": {\r\n    \"extractiveSummarizationTasks\": [\r\n      {\r\n        \"parameters\": {\r\n          \"model-version\": \"latest\",\r\n          \"sentenceCount\": 5,\r\n          \"sortBy\": \"Offset\"\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "{{url-demo}}/text/analytics/v3.2-preview.1/analyze",
+                    "host": [
+                        "{{url-demo}}"
+                    ],
+                    "path": [
+                        "text",
+                        "analytics",
+                        "v3.2-preview.1",
+                        "analyze"
+                    ],
+                    "query": [{
+                        "key": null,
+                        "value": null,
+                        "disabled": true
+                    }]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "GetSummarizationResult",
+            "request": {
+                "method": "GET",
+                "header": [{
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                }],
+                "url": {
+                    "raw": "{{url-demo}}/text/analytics/v3.2-preview.1/analyze/jobs/d66f712b-69a8-4cbf-8249-fb0a843de536",
+                    "host": [
+                        "{{url-demo}}"
+                    ],
+                    "path": [
+                        "text",
+                        "analytics",
+                        "v3.2-preview.1",
+                        "analyze",
+                        "jobs",
+                        "d66f712b-69a8-4cbf-8249-fb0a843de536"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "GetQuestioning_Answering",
+            "request": {
+                "method": "POST",
+                "header": [{
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                }],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\r\n    \"question\": \"What is XYZ-code?\",\r\n    \"documents\": [\r\n        {\r\n            \"text\": \"At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic, human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI Cognitive Services, I have been working with a team of amazing scientists and engineers to turn this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship among three attributes of human cognition: monolingual text (X), audio or visual sensory signals, (Y) and multilingual (Z). At the intersection of all three, there’s magic—what we call XYZ-code as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear, see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have pretrained models that can jointly learn representations to support a broad range of downstream AI tasks, much in the way humans do today. Over the past five years, we have achieved human performance on benchmarks in conversational speech recognition, machine translation, conversational question answering, machine reading comprehension, and image captioning. These five breakthroughs provided us with strong signals toward our more ambitious aspiration to produce a leap in AI capabilities, achieving multisensory and multilingual learning that is closer in line with how humans learn and understand. I believe the joint XYZ-code is a foundational component of this aspiration, if grounded with external knowledge sources in the downstream AI tasks.\",\r\n            \"id\": \"doc1\"\r\n        }\r\n    ],\r\n    \"Language\": \"en\"\r\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "{{url-demo}}/qnamaker/v5.0-preview.2/generateanswer",
+                    "host": [
+                        "{{url-demo}}"
+                    ],
+                    "path": [
+                        "qnamaker",
+                        "v5.0-preview.2",
+                        "generateanswer"
+                    ]
+                }
+            },
+            "response": []
+        }
+    ],
+    "auth": {
+        "type": "apikey",
+        "apikey": [{
+                "key": "value",
+                "value": "",
+                "type": "string"
+            },
+            {
+                "key": "in",
+                "value": "header",
+                "type": "string"
+            },
+            {
+                "key": "key",
+                "value": "Ocp-Apim-Subscription-Key",
+                "type": "string"
+            }
+        ]
+    },
+    "event": [{
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    ""
+                ]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    ""
+                ]
+            }
+        }
+    ],
+    "variable": [{
+            "key": "text_demo1",
+            "value": "En Perficient Latin America manejar tu tiempo no es un beneficio ¡es un estilo de vida! 😎🕗 Si eres Java Developer y quieres vivir nuestra cultura puedes aplicar aquí 👉 https://bit.ly/3D2k8rW"
+        },
+        {
+            "key": "url-demo",
+            "value": ""
+        }
+    ]
+}

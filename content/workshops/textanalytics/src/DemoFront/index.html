@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text Analytics Demo</title>
+
+    <link href="css/estilos.css" rel="stylesheet" />
+    <link href="css/prism.css" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/cf58c07df3.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body id="body">
+    <header>
+        <div class="icon__menu">
+            <i class="fas fa-bars" id="btn_open"></i>
+        </div>
+        <div class="logo__menu">
+            <img src="img/Perficient-Logo-Horz_NoTag.png" width="80%" />
+        </div>
+    </header>
+
+    <div class="menu__side" id="menu_side">
+        <div class="name__page">
+            <i class="fas fa-terminal"></i>
+            <h4>Text Analytics</h4>
+        </div>
+
+        <div class="options__menu">
+            <a data-switcher class="selected" data-item="1">
+                <div class="option">
+                    <i class="fas fa-hashtag" title="Get Started"></i>
+                    <h4>Get Started</h4>
+                </div>
+            </a>
+
+            <a data-switcher data-item="2">
+                <div class="option">
+                    <i class="far fa-address-card" title="Entities"></i>
+                    <h4>Entities</h4>
+                </div>
+            </a>
+
+            <a data-switcher data-item="3">
+                <div class="option">
+                    <i class="fas fa-key" title="Key phrases"></i>
+                    <h4>Key phrases</h4>
+                </div>
+            </a>
+
+            <a data-switcher data-item="4">
+                <div class="option">
+                    <i class="far fa-grin-tears" title="Sentiments"></i>
+                    <h4>Sentiments</h4>
+                </div>
+            </a>
+        </div>
+    </div>
+    <main>
+        <section class="pages">
+            <div class="page is-active" data-page="1">
+                <h2>Get Started</h2>
+                <p>Welcome to the home page let's insert a Twitter Id below</p>
+                <div class="content">
+                    <div class="first-panel">
+                        <form>
+                            <div class="actions">
+                                <div class="group">
+                                    <input id="id-twitter" type="number" required="required" title="insert a Twitter Id" />
+                                    <span class="highlight"></span>
+                                    <span class="bar"></span>
+                                    <label>Twitter Id</label>
+                                </div>
+                                <div class="btn-box">
+                                    <button id="btn-execute" class="btn btn-submit" type="button">
+                                        Execute
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="show-twitter" id="tweet-container"></div>
+                    </div>
+                    <div class="twitter-result">
+                        <div class="results-label">
+                            <h2>Results Json</h2>
+                        </div>
+                        <pre class="line-numbers">
+                            <code class="language-json">
+                            </code>
+                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="page" data-page="2">
+                <h2>Entities</h2>
+                <p>Welcome to the entities page, let's see the results for the last execution</p>
+                <div class="content pt30">
+                    <div class="row">
+                        <div class="column">
+                            <table id="entities-table">
+                                <tr>
+                                    <th>Text</th>
+                                    <th>Category</th>
+                                    <th>Score</th>
+                                    <th>Length</th>
+                                    <th>Offset</th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page" data-page="3">
+                <h2>Key Frases</h2>
+                <p>Welcome to the keyphases pag, let's see the results for the last executione</p>
+                <div class="content pt30">
+                    <div class="row">
+                        <div class="column">
+                            <table id="language-table">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Iso6391Name</th>
+                                    <th>ConfidenceScore</th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="content pt30"></div>
+                <div class="row">
+                    <div class="column">
+                        <table id="keysFrases-table">
+                            <tr>
+                                <th>#</th>
+                                <th>Key</th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="page" data-page="4">
+                <h2>Sentiments</h2>
+                <p>Welcome to the sentiments page, let's see the results for the last execution</p>
+
+            </div>
+        </section>
+    </main>
+
+    <script src="js/script.js"></script>
+    <script src="js/prism.js" crossorigin="anonymous"></script>
+    <script src="https://platform.twitter.com/widgets.js" crossorigin="anonymous"></script>
+</body>
+
+</html>
