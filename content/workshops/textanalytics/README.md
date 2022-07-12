@@ -156,13 +156,19 @@ Now in the Program.cs file of our project we are going to add the following line
 
 ```c#    
 using Microsoft.OpenApi.Models;
-	 
-var builder = WebApplication.CreateBuilder(args);
+ 
+var builder = WebApplication.CreateBuilder(args); //crea 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo TextAnalytics Api", Version = "v1" });
 });
+ 
+var app = builder.Build();
+app.UseSwagger();
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api v1"));
+app.MapGet("/", () => "Hello World!");
+app.Run();
 
 ```
 
