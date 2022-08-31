@@ -5,7 +5,7 @@
 # Pre-settings:
 
 1. Internet
-2. Azure Suusbcrition (Eductation)
+2. Azure Subscription (Eductation)
 3. Twitter developer account
 4. Postman
 5. Visual Studio Code
