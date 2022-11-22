@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "AzFunctionsNet20minutesDemo": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7057",
+      "launchBrowser": false
+    }
+  }
+}

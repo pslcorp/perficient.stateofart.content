@@ -9,4 +9,5 @@ The root path for this directory is ```content/```, inside this folder you will 
 * [Chill and Learn](content/chilandlearns)
 * [.NET 20 minutes](content/net20minutes)
 * [Workshops](content/workshops)
+* [BluePrints](content/BluePrints)
 
