@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 
 //example taken from https://www.geeksforgeeks.org/async-and-await-in-c-sharp/
-namespace ProfilingNetAppPOC
+namespace ProfilingNetAppPOC.Asyncronous
 {
-    public class AsyncCodeProfiling : IShowProfiling
+    public class TeachingInSchool : IShowProfiling
     {
 
         public static async Task StartSchoolAssembly()
