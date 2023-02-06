@@ -2,6 +2,7 @@
 
 
 using ProfilingNetAppPOC;
+using ProfilingNetAppPOC.Asyncronous;
 using ProfilingNetAppPOC.Instrumentation;
 using ProfilingNetAppPOC.ObjectAllocation;
 using ProfilingNetAppPOC.ProfilingInDebugMode;
@@ -17,7 +18,7 @@ showProfilingResult.showProfiling();
 #region ProfilingAsyncCode
 
 //
-showProfilingResult = new AsyncCodeProfiling();
+showProfilingResult = new TeachingInSchool();
 //showProfilingResult.showProfiling();
 
 #endregion
