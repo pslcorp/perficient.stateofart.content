@@ -1,0 +1,338 @@
+﻿@page "/"
+@using ComputerVision.Web.Components
+@using ComputerVision.Web.Data;
+@using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
+@using System.Drawing;
+
+@inject IImageAnalysisService imageAnalysisService
+
+<PageTitle>Image Analysis</PageTitle>
+
+<h3>ImageAnalysis</h3>
+
+<ImageUploadComponent @ref="imageUpload" @bind-Value="TargetImage" />
+<button type="button" @onclick="ProcessClickHandler" disabled="@(TargetImage == null && !IsProcessing)">Process Image</button>
+
+@if (HasError)
+{
+    <p class="alert-danger">@Error</p>
+}
+@if (AnalysisDone)
+{
+    <h2>Results</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Object Detection</th>
+                <th scope="col">Face Detection</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(ObjectsResultImageUri))
+                    {
+                        <img src="@ObjectsResultImageUri" />
+                    }
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(FacesResultImageUri))
+                    {
+                        <img src="@FacesResultImageUri" />
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Brands</th>
+                <th scope="col">Categories</th>
+                <th scope="col">Captions</th>
+                <th scope="col">Tags</th>
+                <th scope="col">Landmarks</th>
+                <th scope="col">Is Adult Content</th>
+                <th scope="col">Is Racy Content</th>
+                <th scope="col">Is Gory Content</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @if (Brands?.Count > 0)
+                    {
+                        <ul>
+                            @foreach (var brand in Brands)
+                            {
+                                <li>
+                                    @(
+                                        $"{brand.Name} ({brand.Confidence:P})"
+                                        )
+                                </li>
+                            }
+                        </ul>
+                    }
+                </td>
+                <td>
+                    @if (Categories?.Count > 0)
+                    {
+                        <ul>
+                            @foreach (var category in Categories)
+                            {
+                                <li>
+                                    @(
+                                        $"{category.Name} ({category.Score:P})"
+                                        )
+                                </li>
+                            }
+                        </ul>
+                    }
+                </td>
+                <td>
+                    @if (ImageCaptions?.Count > 0)
+                    {
+                        <ul>
+                            @foreach (var caption in ImageCaptions)
+                            {
+                                <li>
+                                    @(
+                                        $"{caption.Text} ({caption.Confidence:P})"
+                                        )
+                                </li>
+                            }
+                        </ul>
+                    }
+                </td>
+                <td>
+                    @if (ImageTags?.Count > 0)
+                    {
+                        <ul>
+                            @foreach (var tag in ImageTags)
+                            {
+                                <li>
+                                    @(
+                                        $"{tag.Name} ({tag.Confidence:P})"
+                                        )
+                                </li>
+                            }
+                        </ul>
+                    }
+                </td>
+                <td>
+                    @if (Landmarks?.Count > 0)
+                    {
+                        <ul>
+                            @foreach (var landmark in Landmarks)
+                            {
+                                <li>
+                                    @(
+                                        $"{landmark.Name} ({landmark.Confidence:P})"
+                                        )
+                                </li>
+                            }
+                        </ul>
+                    }
+                </td>
+                <td>@IsAdultContent</td>
+                <td>@IsRacyContent</td>
+                <td>@IsGoryContent</td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+@code {
+
+    ImageUploadComponent? imageUpload;
+
+    #region Props
+
+    IList<DetectedBrand>? Brands;
+    IList<Category>? Categories;
+    string Error = string.Empty;
+    IList<FaceDescription>? Faces;
+    Image? FacesResultImage;
+    string FacesResultImageUri = string.Empty;
+    bool HasError = false;
+    IList<ImageCaption>? ImageCaptions;
+    IList<ImageTag>? ImageTags;
+    bool IsAdultContent = false;
+    bool IsGoryContent = false;
+    bool IsRacyContent = false;
+    IList<LandmarksModel>? Landmarks;
+    IList<DetectedObject>? Objects;
+    Image? ObjectsResultImage;
+    string ObjectsResultImageUri = string.Empty;
+    IBrowserFile? TargetImage;
+    bool AnalysisDone = false;
+    bool IsProcessing = false;
+
+    #endregion
+
+    IList<VisualFeatureTypes?> TargetFeatures = new List<VisualFeatureTypes?>{
+            VisualFeatureTypes.Description,
+            VisualFeatureTypes.Tags,
+            VisualFeatureTypes.Categories,
+            VisualFeatureTypes.Brands,
+            VisualFeatureTypes.Objects,
+            VisualFeatureTypes.Adult,
+            VisualFeatureTypes.Faces,
+        };
+
+    #region Process Handler
+
+    private async void ProcessClickHandler()
+    {
+        Console.WriteLine("Processing image...");
+        await AnalyzeImage();
+        StateHasChanged();
+    }
+
+    public async Task AnalyzeImage()
+    {
+        IsProcessing = true;
+        AnalysisDone = false;
+        HasError = TargetImage is null;
+        if (HasError)
+        {
+            Error = "An image hasn't been selected for processing";
+            return;
+        }
+        Error = string.Empty;
+
+        ObjectsResultImageUri = string.Empty;
+        FacesResultImageUri = string.Empty;
+
+        // Get image analysis
+        var targetImageFile = await TargetImage!.RequestImageFileAsync("image/png", 600, 600);
+        using (var imageData = targetImageFile!.OpenReadStream(1024 * 1024 * 10))
+        {
+            var analysis = await imageAnalysisService.AnalyzeImage(imageData, TargetFeatures);
+
+            HasError = analysis is null;
+            if (HasError)
+            {
+                Error = "An error ocurred while requesting Image Analysis";
+                return;
+            }
+
+            ExtractAnalysisResults(analysis!);
+
+            if (!OperatingSystem.IsWindows())
+            {
+                HasError = true;
+                Error = "Object and Face detection are only supported in Windows.";
+                AnalysisDone = true;
+                return;
+            }
+
+            // Get objects in the image
+            try
+            {
+                if (Objects!.Count > 0)
+                {
+                    var image = await TargetImage!.RequestImageFileAsync("image/png", 600, 600);
+                    using (Stream imageStream = image.OpenReadStream(1024 * 1024 * 10))
+                    {
+                        using MemoryStream ms = new();
+                        //copy imageStream to Memory stream
+                        await imageStream.CopyToAsync(ms);
+                        var img = Image.FromStream(ms);
+
+                        //Prepare image for drawing
+                        var graphics = Graphics.FromImage(img);
+                        var pen = new Pen(Color.Cyan, 3);
+                        var font = new Font("Arial", 16);
+                        var brush = new SolidBrush(Color.Black);
+
+                        foreach (var detectedObject in Objects)
+                        {
+
+                            //Draw object bounding box
+                            String textToDraw = $"{detectedObject.ObjectProperty} ({detectedObject.Confidence:P})";
+
+                            var r = detectedObject.Rectangle;
+                            var rect = new Rectangle(r.X, r.Y, r.W, r.H);
+                            graphics.DrawRectangle(pen, rect);
+                            graphics.FillRectangle(Brushes.Cyan, new Rectangle(r.X, r.Y, r.W, 24));
+                            graphics.DrawString(textToDraw, font, brush, r.X, r.Y);
+                        }
+                        ObjectsResultImageUri = $"data:image/png;base64,{Convert.ToBase64String(ImageToBytes(img))}";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                HasError = true;
+                Error = $"Object Analysis failed: {ex.Message}";
+            }
+
+            try
+            {
+                if (Faces!.Count > 0)
+                {
+                    var image = await TargetImage!.RequestImageFileAsync("image/png", 600, 600);
+                    using (Stream imageStream = image.OpenReadStream(1024 * 1024 * 10))
+                    {
+                        using MemoryStream ms = new();
+                        //copy imageStream to Memory stream
+                        await imageStream.CopyToAsync(ms);
+                        var img = Image.FromStream(ms);
+
+                        //Prepare image for drawing
+                        var graphics = Graphics.FromImage(img);
+                        var pen = new Pen(Color.Yellow, 3);
+
+                        foreach (var detectedFace in Faces)
+                        {
+                            //Draw object bounding box
+                            var r = detectedFace.FaceRectangle;
+                            var rect = new Rectangle(r.Left, r.Top, r.Width, r.Height);
+                            graphics.DrawRectangle(pen, rect);
+                        }
+                        FacesResultImageUri = $"data:image/png;base64,{Convert.ToBase64String(ImageToBytes(img))}";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                HasError = true;
+                Error = $"Face Analysis failed: {ex.Message}";
+            }
+            AnalysisDone = true;
+            IsProcessing = false;
+        }
+    }
+
+    private byte[] ImageToBytes(Image image)
+    {
+        if (!OperatingSystem.IsWindows()) return Array.Empty<byte>();
+
+        using var stream = new MemoryStream();
+        image.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+        return stream.ToArray();
+    }
+
+    #endregion
+
+    private void ExtractAnalysisResults(ImageAnalysis analysis)
+    {
+        //get image captions
+
+        // Get image tags
+
+        // Get image categories
+
+        //Iterate through categories and extract landmarks
+
+        // Get brands in the image
+
+        //Get Objects in image
+
+        //Get Detected Faces
+
+        // Get moderation ratings (Adult, Racy, Gory)
+    }
+}

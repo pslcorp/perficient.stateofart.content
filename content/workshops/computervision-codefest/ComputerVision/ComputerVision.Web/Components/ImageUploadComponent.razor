@@ -1,0 +1,32 @@
+﻿@namespace ComputerVision.Web.Components
+<div>
+    <InputFile accept="image/jpeg, image/png, image/jpg" OnChange="LoadImage" />
+    <img src="@ImageUri" />
+</div>
+
+@code {
+    public string? ImageUri;
+
+    [Parameter]
+    public IBrowserFile? Value { get; set; }
+
+    [Parameter]
+    public EventCallback<IBrowserFile?> ValueChanged { get; set; }
+
+    public async Task LoadImage(InputFileChangeEventArgs inputFileChangeEventArgs)
+    {
+        Value = inputFileChangeEventArgs.File;
+        var image = await Value.RequestImageFileAsync("image/png", 600, 600);
+
+        using Stream imageStream = image.OpenReadStream(1024 * 1024 * 10);
+
+        using MemoryStream ms = new();
+        //copy imageStream to Memory stream
+        await imageStream.CopyToAsync(ms);
+
+        //convert stream to base64
+        ImageUri = $"data:image/png;base64,{Convert.ToBase64String(ms.ToArray())}";
+        StateHasChanged();
+        await ValueChanged.InvokeAsync(Value);
+    }
+}
